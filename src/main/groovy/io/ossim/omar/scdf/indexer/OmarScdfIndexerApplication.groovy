@@ -4,7 +4,6 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.cloud.stream.annotation.EnableBinding
@@ -12,8 +11,6 @@ import org.springframework.cloud.stream.annotation.StreamListener
 import org.springframework.cloud.stream.messaging.Processor
 import org.springframework.messaging.Message
 import org.springframework.messaging.handler.annotation.SendTo
-import joms.oms.Init
-import joms.oms.ImageStager
 
 /**
  * Created by slallier on 6/8/2017
@@ -121,7 +118,7 @@ class OmarScdfIndexerApplication
         boolean successfullyIndexed = false
 
         // Index using curl request
-        String addRasterCurlURL = "${addRasterUrl}" +
+        String addRasterFinalURL = "${addRasterUrl}" +
                 "${params.filename}" +
                 "&${params.buildHistograms}" +
                 "&${params.buildOverviews}" +
@@ -129,8 +126,17 @@ class OmarScdfIndexerApplication
                 "&${params.overviewCompressionType}" +
                 "&${params.overviewType}"
 
+        // Do URL request
+        log.debug("Sending stager request: ${addRasterFinalURL}")
 
+        URL url = new URL(addRasterFinalURL)
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection()
+        httpURLConnection.setRequestMethod("POST")
+        httpURLConnection.connect()
 
-        return successfullyIndexed
+        String response = httpURLConnection.getResponseMessage()
+        log.debug("Response from stager: ${response}")
+
+        return httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED
     }
 }
