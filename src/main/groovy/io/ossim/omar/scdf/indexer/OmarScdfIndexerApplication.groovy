@@ -123,8 +123,10 @@ class OmarScdfIndexerApplication
         httpURLConnection.connect()
 
         String response = httpURLConnection.getResponseMessage()
+        int responseCode = httpURLConnection.getResponseCode()
         log.debug("Response from stager: ${response}")
+        log.debug("Response code from stager: ${responseCode}")
 
-        return httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED
+        return responseCode == HttpURLConnection.HTTP_OK
     }
 }
