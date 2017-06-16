@@ -34,14 +34,8 @@ class OmarScdfIndexerApplication
     @Value('${stager.build.overviews:false}')
     private boolean buildOverviews
 
-    @Value('${stager.use.fast.histograms:false}')
-    private boolean useFastHistograms
-
-    @Value('${stager.overview.compression.type:none}')
-    private String overviewCompressionType
-
-    @Value('${stager.overview.type:ossim_tiff_box}')
-    private String overviewType
+    @Value('${stager.background:false}')
+    private boolean background
 
     /**
      * The main entry point of the SCDF Sqs application.
@@ -83,9 +77,7 @@ class OmarScdfIndexerApplication
                         filename                     : filename,
                         buildHistograms              : buildHistograms,
                         buildOverviews               : buildOverviews,
-                        useFastHistograms            : useFastHistograms,
-                        overviewCompressionType      : overviewCompressionType,
-                        overviewType                 : overviewType
+                        background                   : background
                 ]
 
                 log.debug("Indexing params:\n ${params}")
@@ -115,16 +107,12 @@ class OmarScdfIndexerApplication
     */
     final private boolean indexImage(HashMap params)
     {
-        boolean successfullyIndexed = false
-
         // Index using curl request
         String addRasterFinalURL = "${addRasterUrl}" +
-                "${params.filename}" +
-                "&${params.buildHistograms}" +
-                "&${params.buildOverviews}" +
-                "&${params.useFastHistograms}" +
-                "&${params.overviewCompressionType}" +
-                "&${params.overviewType}"
+                "filename=${params.filename}" +
+                "&buildHistograms=${params.buildHistograms}" +
+                "&buildOverviews=${params.buildOverviews}" +
+                "&background=${params.background}"
 
         // Do URL request
         log.debug("Sending stager request: ${addRasterFinalURL}")
