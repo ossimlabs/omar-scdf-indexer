@@ -67,7 +67,7 @@ class OmarScdfIndexerApplication
             final String filename = parsedJson.filename
 
             // If the stager successfully created histogram/overview, attempt to index
-            if (Boolean.parseBoolean(parsedJson.stagedSuccessfully))
+            if (parsedJson.stagedSuccessfully == true)
             {
 
                 // index image by calling the existing stager on omar-dev
