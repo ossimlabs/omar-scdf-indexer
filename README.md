@@ -6,13 +6,13 @@ This means it:
 3. Sends the result on a Spring Cloud output stream using Kafka to a listening SCDF Processor or SCDF Sink.
 
 ## Purpose
-The Indexer receives a JSON message from the Stager containing the filename and path of a staged image, as well as the result of the stage. If the histogram and overview were successfully created, the Indexer then attempts to index the image. Finally, the Stager passes the message along to a Sink, uses the final result to report the pipeline success.
+The Indexer receives a JSON message from the Image Info app containing the filename and path of an image which has been staged, as well as the metadata parsed from the Image Info app. The Indexer then attempts to add the metadata to the database. If successful, it sends a JSON message to the Sink indicating success.
 
-## JSON Input Example (from the Stager)
+## JSON Input Example (from the Image Info app)
 ```json
 {
    "filename":"/data/2017/06/22/09/933657b1-6752-42dc-98d8-73ef95a5e780/12345/SCDFTestImages/tiff/14SEP12113301-M1BS-053951940020_01_P001.TIF",
-   "stagedSuccessfully":true
+   "metadataCreated":true
 }
 ```
 
