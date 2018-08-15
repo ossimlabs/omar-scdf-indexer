@@ -1,9 +1,7 @@
 # omar-scdf-indexer
-The Indexer is a Spring Cloud Data Flow (SCDF) Processor.
-This means it:
-1. Receives a message on a Spring Cloud input stream using RabbitMQ.
-2. Performs an operation on the data.
-3. Sends the result on a Spring Cloud output stream using RabbitMQ to a listening SCDF Processor or SCDF Sink.
+
+## Description
+The OMAR SCDF indexer application is a Spring Cloud Data Flow processor service involved in ingesting imagery. It receives an image's message data, adds the metadata to the database, and forwards the message down the stream.
 
 ## Purpose
 The Indexer receives a JSON message from the Image Info app containing the filename and path of an image which has been staged, as well as the metadata parsed from the Image Info app. The Indexer then attempts to add the metadata to the database. If successful, it sends a JSON message to the Sink indicating success.
